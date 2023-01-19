@@ -10,7 +10,7 @@ addpath(genpath(project_root));
 %% Simulation options
 
 DRONE_TYPE = "point_mass"; % swarming mode supports only quadcopter and point_mass
-ACTIVE_ENVIRONMENT = true;
+ACTIVE_ENVIRONMENT = false;
 DEBUG = true;
 VIDEO = true;
 CENTER_VIEW_ON_SWARM = false;
