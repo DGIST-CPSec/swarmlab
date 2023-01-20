@@ -51,7 +51,7 @@ if isempty(swarm_fig)
     % set(scatter_handle.Parent, 'XLim', x_lim, 'YLim', y_lim, 'ZLim', z_lim);
     
     % Draw cylinders
-    nb_edges  = 8;
+    nb_edges  = 3;
     gray_shade = 0.8; % from 0 to 1
     if length(cylinders_vector)>1
         cylinders = reshape(cylinders_vector,3,[]);
