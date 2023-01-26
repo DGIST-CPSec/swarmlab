@@ -42,3 +42,8 @@ octave-workspace
 
 # Custom folder for results
 results*/*
+
+*/results/
+/examples/*/results/
+/desynced/*/results/
+
