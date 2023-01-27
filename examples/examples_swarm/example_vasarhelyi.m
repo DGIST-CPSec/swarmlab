@@ -13,7 +13,7 @@ DRONE_TYPE = "point_mass"; % swarming mode supports only quadcopter and point_ma
 ACTIVE_ENVIRONMENT = true;
 DEBUG = true;
 VIDEO = true;
-CENTER_VIEW_ON_SWARM = false;
+CENTER_VIEW_ON_SWARM = true;
 SWARM_ALGORITHM = "vasarhelyi"; % either vasarhelyi or olfati_saber
 
 if DEBUG || VIDEO

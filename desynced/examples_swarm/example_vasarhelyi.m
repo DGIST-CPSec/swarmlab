@@ -13,7 +13,7 @@ DRONE_TYPE = "point_mass"; % swarming mode supports only quadcopter and point_ma
 ACTIVE_ENVIRONMENT = true;
 DEBUG = true;
 VIDEO = true;
-CENTER_VIEW_ON_SWARM = false;
+CENTER_VIEW_ON_SWARM = true;
 SWARM_ALGORITHM = "vasarhelyi"; % either vasarhelyi or olfati_saber
 
 if DEBUG || VIDEO
@@ -58,7 +58,7 @@ elseif DRONE_TYPE == "quadcopter"
    SWARM_VIEWER_TYPE = "drone";
 end
 
-p_swarm.nb_agents = 13;
+p_swarm.nb_agents = 7;
 
 %% Call parameters files
 
@@ -110,8 +110,7 @@ states_handle = [];
 
 disp('Type CTRL-C to exit');
 for time = p_sim.start_time:p_sim.dt:p_sim.end_time
-    disp(["Drone 1: ", swarm.drones(1,1).vel_xyz'])
-
+    disp("time: " + time)
     % Check if program terminated from GUI
     if exist('app', 'var')
         switch app.StartsimulationSwitch.Value
@@ -154,7 +153,6 @@ for time = p_sim.start_time:p_sim.dt:p_sim.end_time
         swarm_viewer.update(time, swarm, map);
         video.update(time, swarm_viewer.figure_handle);  
     end
-    disp(swarm.drones(1,1).vel_xyz_history(end,:))
 end
 
 if VIDEO
