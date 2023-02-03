@@ -42,3 +42,8 @@ octave-workspace
 
 # Custom folder for results
 results*/*
+@Swarm/results/*
+desynced/results/*
+desynced/examples_swarm/results/*
+examples/examples_swarm/results/*
+examples/results/*
