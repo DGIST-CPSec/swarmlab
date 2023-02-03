@@ -38,10 +38,18 @@ union = zeros(t_steps,1);
 alg_conn = zeros(t_steps,1);
 safety_obs = zeros(t_steps,1);
 min_d_obs = zeros(t_steps,nb_agents);
+unit_min_dist = zeros(t_steps, nb_agents);
 
 %% Loop over time
 
 for k = 1:t_steps
+
+    %% Minimum distance between agents
+    pos_k = pos_history(k,:);
+    pos_k = reshape(pos_k,3,[]);
+    dist_vect_k = pdist(pos_k');
+    min_d_units = min(squareform(dist_vect_k)+diag(Inf(nb_agents,1)));
+    unit_min_dist(k,:) = min_d_units;
     
     %% Safety: reflects the number of collisions among the swarm agents
     
@@ -127,6 +135,16 @@ for k = 1:t_steps
     end
     
 end
+
+%% Save unit_min_dist and plot graph
+figure('Name', 'Minimum Unit-Unit Distance');
+plot(unit_min_dist, 'LineWidth', 2);
+title('Minimum Unit-Unit Distance');
+xlabel('Time step[0.01s]');
+ylabel('Distance[m]');
+ylim([0 Inf]);
+yline(20, '--r')
+% writematrix(unit_min_dist, 'unit_min_dist.csv');
 
 %% Save workspace
 
