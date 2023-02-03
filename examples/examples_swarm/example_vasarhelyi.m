@@ -13,7 +13,7 @@ DRONE_TYPE = "point_mass"; % swarming mode supports only quadcopter and point_ma
 ACTIVE_ENVIRONMENT = true;
 DEBUG = true;
 VIDEO = true;
-CENTER_VIEW_ON_SWARM = true;
+CENTER_VIEW_ON_SWARM = false;
 SWARM_ALGORITHM = "vasarhelyi"; % either vasarhelyi or olfati_saber
 
 if DEBUG || VIDEO
@@ -50,6 +50,7 @@ if exist('app', 'var')
     % Debug plot
     DEBUG = app.debug_plot;
 end
+
 
 if DRONE_TYPE == "point_mass"
    SWARM_VIEWER_TYPE = "agent";

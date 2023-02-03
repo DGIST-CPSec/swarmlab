@@ -19,8 +19,8 @@ function [vel_command, collisions] = compute_vel_vasarhelyi(self, p_swarm, r_age
     %
     
     trigger_delay_vel = true;
-    trigger_delay_pos = true;
-    del_time_vel = 10;
+    trigger_delay_pos = false;
+    del_time_vel = 80;
     del_time_pos = 10;
 
     %% Initialize variables
@@ -41,25 +41,29 @@ function [vel_command, collisions] = compute_vel_vasarhelyi(self, p_swarm, r_age
     nb_agent_collisions = 0; % Nb of collisions among agents
     nb_obs_collisions = 0; % Nb of collisions against obstacles
     min_dist_obs = 20;
+    
+    vel_delayed = zeros(3, nb_agents);  % Delayed velocity
+   
 
     %% Delay Function START
     if trigger_delay_vel
-        if length(self.drones(1,1).vel_xyz_history) > 1000
-            vel_delayed = zeros(3, nb_agents);  % Delayed velocity
+%         disp('Velocity: Delay Triggered');
+        if length(self.drones(1,1).vel_xyz_history) > 3000
             for agent = 1:nb_agents
                 vel_delayed(:,agent) = self.drones(agent,1).vel_xyz_history(end-del_time_vel, :)';
             end
-    %         disp("Delayed 10 frame (0.1 second) velocity propagation");
+            disp("Delayed "+del_time_vel+" frame (0.1 second) velocity propagation");
         else
             vel_delayed = vel;
-    %         disp("Correct velocity propagation");
+            disp("Correct velocity propagation");
         end
     else
+%         disp('Velocity: Control State');
         vel_delayed = vel;
     end
 
     if trigger_delay_pos
-        if length(self.drones(1,1).pos_xyz_history) > 1000
+        if length(self.drones(1,1).pos_xyz_history) > 3000
             pos_delayed = zeros(3, nb_agents);  % Delayed position
             for agent = 1:nb_agents
                 pos_delayed(:,agent) = self.drones(agent,1).pos_xyz_history(end-del_time_pos, :)';
@@ -73,9 +77,9 @@ function [vel_command, collisions] = compute_vel_vasarhelyi(self, p_swarm, r_age
     %% Delay Function END
 
 %     disp(vel_delayed);
-    
+
     %% Compute velocity commands
-    
+
     for agent = 1:nb_agents
         
         
@@ -119,8 +123,12 @@ function [vel_command, collisions] = compute_vel_vasarhelyi(self, p_swarm, r_age
         %% Compute different contributions
         
         if nb_neig ~= 0
-            v_rel = vel - vel_delayed(:, agent);
+            v_rel = vel_delayed - vel(:, agent);
+            disp("HERE::::::::::::");
+            disp(vel_delayed);
+            disp(vel(:,agent));
             v_rel(:,1) = 0;
+            disp(v_rel);
             v_rel_norm = sqrt(sum((v_rel.^2), 1));
 
             % Compute vel and pos unit vector between two agents
