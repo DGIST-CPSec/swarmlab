@@ -17,8 +17,8 @@ CENTER_VIEW_ON_SWARM = false;
 SWARM_ALGORITHM = "vasarhelyi"; % either vasarhelyi or olfati_saber
 
 if DEBUG || VIDEO
-    results_dirname = strcat('results/results_swarm');
-    date_string = datestr(now,'yyyy_mm_dd_HH_MM_SS');
+    results_dirname = strcat('~/UGRP/Weekly/results_swarm');
+    date_string = datestr(datetime("now"),'mmdd_HHMMSS');
     subfolder = strcat(erase(mfilename,"example_"), '_', date_string);
     results_dirname = strcat(results_dirname, '/', subfolder);
     if ~exist(results_dirname, 'dir')
@@ -57,6 +57,9 @@ elseif DRONE_TYPE == "quadcopter"
    SWARM_VIEWER_TYPE = "drone";
 end
 
+%% Force Swarm size, simulation params
+p_swarm.nb_agents = 10;
+p_sim.end_time = 150;
 
 %% Call parameters files
 
@@ -133,6 +136,31 @@ for time = p_sim.start_time:p_sim.dt:p_sim.end_time
         orientation = app.orientation;
         p_swarm.u_ref = [-cosd(orientation), -sind(orientation), 0]';
     end
+
+    %% Manual Change of Orientation
+    % circular trajectory
+    % orientation = time/(p_sim.end_time - p_sim.start_time) * 360;
+
+    % box drawing trajectory
+    % if time < p_sim.end_time/4
+    %     orientation = 225-90;
+    % elseif time < p_sim.end_time / 2
+    %     orientation = 315-90;
+    % elseif time < 3 * p_sim.end_time / 4
+    %     orientation = 45-90;
+    % else
+    %     orientation = 135-90;
+    % end 
+
+    % % Linear round trajectory
+    % if (time < p_sim.end_time/4) || (time > p_sim.end_time/2 && time < 3*p_sim.end_time/4)
+    %     orientation = 180;
+    % else
+    %     orientation = 0;
+    % end
+
+    % p_swarm.u_ref = [-cosd(orientation), -sind(orientation), 0]';
+    % disp(orientation);
 
     % Compute velocity commands from swarming algorithm
     [vel_c,collisions] = swarm.update_command(p_swarm, p_swarm.r_coll, p_sim.dt);
